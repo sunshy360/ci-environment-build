@@ -54,3 +54,6 @@
   apt:
     name: jenkins=2.46.2
     state: present
+
+- name: install jenkins plugins
+  include: install_plugins.yml
