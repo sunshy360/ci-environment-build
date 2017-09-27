@@ -1,6 +1,6 @@
-#DevOps Homework
+# DevOps Homework
 
-###step1(Done)
+### step1(Done)
 
 使用Vagrant + Ansible搭建一个CI环境，需要安装Jenkins。
 
@@ -16,7 +16,7 @@
 + 如何在重启虚拟机后Jenkins也自动运行(Done)
 + Jenkins插件如何自动化安装(Done)
 
-###step2
+### step2
 
 配置一个pipeline, 能实现简单的CD。
 
@@ -32,7 +32,7 @@
 + 如何部署到多台机器
 + 如何使用Nginx做Load balance
 
-###step3
+### step3
 
 增加数据库，前后端分离。
 
