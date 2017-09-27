@@ -17,7 +17,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.network "private_network", type: "dhcp"
 
-  config.vm.provision "shell", path: "install_jenkins.sh"
+  # config.vm.provision "shell", path: "install_jenkins.sh"
+  config.vm.provision "ansible" do |ansible|
+        ansible.playbook = "playbook.yml"
+  end
       
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

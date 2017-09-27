@@ -1,0 +1,60 @@
+---
+- hosts: ci_server
+  become: yes
+  
+  tasks:
+    # test connection
+    - name: test connection
+      ping:
+      register: message
+
+    # get response
+    - name: print pong message
+      debug:
+        msg: "{{ message }}"
+
+    # test the existence of sources.list
+    - name: stat sources_list 
+      stat: path=/etc/apt/sources.list
+      register: sources_list_stat
+
+    # if source_list exists, then move file
+    - name: Move sources_list to sources_list_old
+      command: mv /etc/apt/sources.list /etc/apt/sources.list.old
+      when: sources_list_stat.stat.exists
+
+    # copy file
+    - name: Copy aliyun source to apt directory
+      copy:
+        src: /vagrant/sources.list
+        dest: /etc/apt/sources.list
+        owner: root
+        group: root
+        mode: 0644
+        remote_src: yes
+
+    # add jenkins apt-key 
+    - name: Add an jenkins-ci apt signing key, uses whichever key is at the URL
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins-ci.org.key
+        state: present
+
+    # add jenkins repository and apt-get update
+    - name: Add jenkins repository into sources list using specified filename.
+      apt_repository:
+        repo: deb http://pkg.jenkins.io/debian-stable binary/
+        state: present
+        filename: 'jenkins'
+        update_cache: yes
+
+    # install default-jdk
+    - name: Install the package "default-jdk"
+      apt:
+        name: default-jdk
+        state: present
+
+    # install jenkins
+    - name: Install the version '2.46.2' of package "jenkins"
+      apt:
+        name: jenkins=2.46.2
+        state: present
