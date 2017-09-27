@@ -4,7 +4,7 @@
   ping:
   register: message
 
-# get response
+# get response (useless but i want to see the connection is fine)
 - name: print pong message
   debug:
     msg: "{{ message }}"
@@ -19,7 +19,7 @@
   command: mv /etc/apt/sources.list /etc/apt/sources.list.old
   when: sources_list_stat.stat.exists
 
-# copy file
+# copy file (notice the remote_src!)
 - name: Copy aliyun source to apt directory
   copy:
     src: /vagrant/sources.list
@@ -35,7 +35,7 @@
     url: https://pkg.jenkins.io/debian/jenkins-ci.org.key
     state: present
 
-# add jenkins repository and apt-get update
+# add jenkins repository and then apt-get update
 - name: Add jenkins repository into sources list using specified filename.
   apt_repository:
     repo: deb http://pkg.jenkins.io/debian-stable binary/
@@ -55,5 +55,6 @@
     name: jenkins=2.46.2
     state: present
 
+# install jenkins plugins
 - name: install jenkins plugins
   include: install_plugins.yml

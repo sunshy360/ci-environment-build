@@ -1,4 +1,5 @@
 ---
+  # create directory if not exist
   - name: create plugins directory
     file:
       path: "{{ jenkins_plugins_path }}"
@@ -6,12 +7,14 @@
       owner: jenkins
       group: jenkins
 
+  # use get_url to download (equivalence to wget)
   - name: download plugins
     get_url:
       url: http://updates.jenkins-ci.org/latest/{{ item }}.hpi
       dest: "{{ jenkins_plugins_path }}/{{ item }}.hpi"
       owner: jenkins
       group: jenkins
+    # for loop
     with_items:
       - ace-editor
       - antisamy-markup-formatter
@@ -76,6 +79,7 @@
       - workflow-support
       - ws-cleanup
 
+  # restart jenkins service
   - name: restart jenkins
     service:
       name: jenkins
